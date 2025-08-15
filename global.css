@@ -1,0 +1,212 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f0f0f0; /* Cor de fundo suave para o corpo */
+}
+
+.form-group, .login-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+img {
+    max-width: 70%; /* Makes sure images are not bigger than their container */
+    height: auto; /* Keeps the aspect ratio */
+    display: block; /* Removes bottom space/margin */
+    margin-right: 10px; /* Space to the right of the image */
+    vertical-align: middle; /* Aligns image vertically centered with adjacent text */
+        }
+
+label, .login-container label {
+    font-size: 16px; /* Tamanho da fonte dos rótulos */
+    color: #555; /* Cor da fonte dos rótulos */
+    margin-bottom: 10px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], /* Adicionado input[type="email"] aqui */
+textarea {
+    width: calc(100% - 20px); /* Subtrai o padding da largura total */
+    padding: 15px 10px;
+    margin-top: 5px;
+    border: none; /* Remove a borda */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra suave */
+    font-size: 16px; /* Tamanho da fonte nos inputs */
+    background-color: #fff; /* Cor de fundo para os campos */
+    color: #333; /* Cor da fonte nos campos */
+}
+
+
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #6a5acd;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #7b68ee;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+button:active {
+    opacity: 0.8;
+}
+
+button[disabled] {
+    opacity: 0.5;
+}
+
+.clear {
+    background: transparent;
+    border: none;
+    color: #6a5acd; /* Ajustado para combinar com a cor do botão principal */
+}
+
+.solid {
+    background: #fff;
+    border: none;
+    color: #6a5acd; /* Mantendo o tema de cor */
+}
+
+.outline {
+    background: transparent;
+    color: #6a5acd; /* Mantendo o tema de cor */
+    border: 1px solid #6a5acd; /* Mantendo o tema de cor */
+}
+
+.error {
+    background: red;
+    color: white;
+    display: none; /* Mantenha oculto até que seja necessário mostrar */
+    padding: 5px; /* Ajuste conforme necessário */
+    margin-top: 5px; /* Ajuste conforme necessário */
+    border-radius: 5px; /* Suaviza as bordas */
+}
+
+@media (max-width: 768px) {
+    .form-group, .login-container {
+        flex-direction: column;
+        width: 100%;
+    }
+    .footer-section > div {
+        margin-right: 0; /* Ajusta o espaçamento para telas menores */
+    }
+}
+
+/* Adicionando os estilos específicos da seção de footer para harmonização */
+.footer {
+    padding: 20px;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.footer-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.footer h3 {
+    text-align: center;
+    color: #6a5acd;
+}
+
+.footer-section > div {
+    margin-right: 20px;
+    flex: 1;
+    min-width: 250px;
+}
+
+:root{
+  --bg:#0b0e13; --panel:#121722; --card:#171d2a; --text:#e6ecff; --muted:#9db0d0;
+  --brand:#5eead4; --accent:#7aa2ff; --danger:#ff6b6b;
+}
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+  padding:20px;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.form-group, .login-container{
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+
+img{
+  max-width:100%;
+  height:auto;
+  display:block;
+}
+
+label, .login-container label{
+  font-size:16px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+input[type="text"], input[type="password"], input[type="email"], textarea{
+  width:100%;
+  padding:12px;
+  margin-top:5px;
+  border:1px solid #263043;
+  border-radius:10px;
+  background:#0e1420;
+  color:var(--text);
+  box-shadow:none;
+  font-size:16px;
+}
+
+button{
+  cursor:pointer;
+  padding:10px 20px;
+  margin-right:20px;
+  margin-top:20px;
+  border:1px solid #263043;
+  border-radius:10px;
+  background:var(--panel);
+  color:var(--text);
+  box-shadow:0 0 0 0 rgba(126,162,255,.0);
+  transition:border-color .2s, transform .1s;
+}
+button:hover{ transform: translateY(-1px); border-color:#2f3c56; }
+button:active{ transform: translateY(0); }
+button[disabled]{ opacity:.5; }
+
+.clear{ background:transparent; border:1px solid transparent; color:var(--accent); }
+.solid{ background:var(--card); color:var(--text); border:1px solid #263043; }
+.outline{ background:transparent; color:var(--accent); border:1px solid var(--accent); }
+
+.error{
+  background:#4a1f2a;
+  color:#ffd6d6;
+  display:none;
+  padding:6px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #5b2a35;
+}
+
+@media (max-width: 768px){
+  .form-group, .login-container{ flex-direction:column; width:100%; }
+  .footer-section > div{ margin-right:0; }
+}
+
+/* Footer (registrar.html) no tema escuro */
+.footer{ padding:20px; background:var(--bg); color:var(--text); }
+.footer-section{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; }
+.footer h3{ text-align:center; color:var(--accent); }
+.footer-section > div{ margin-right:20px; flex:1; min-width:250px; }

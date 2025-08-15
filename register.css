@@ -1,0 +1,39 @@
+/* Register page — dark theme, combinando com o app */
+body{
+  background: var(--bg);
+  color: var(--text);
+  height: 100svh;
+  margin: 0;
+}
+
+.centralize{ min-height: 100svh; display: grid; place-items: start center; padding: 24px; }
+
+/* Card igual ao app */
+.card{
+  background: linear-gradient(180deg, var(--card), #111827);
+  border:1px solid #253045;
+  border-radius:16px;
+  padding:16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.02);
+}
+
+.register-card{ width: min(94vw, 720px); margin: 0 auto 24px; }
+
+form{ width: 100%; }
+.form-field{ margin-bottom: 14px; }
+.form-field label{ color: var(--muted); font-size: 14px; }
+
+/* Inputs e botões herdam de global.css (dark) */
+input, textarea{ width:100%; }
+button{ margin-bottom: 10px; }
+
+/* Footer usa variáveis do tema */
+.footer{ padding:20px; background: var(--bg); color: var(--text); max-width:1200px; margin:auto; }
+.footer h3{ color: var(--accent); }
+.footer-section{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; margin-bottom:20px; }
+.footer-section > div{ margin-right:20px; flex:1; min-width:250px; }
+
+@media (max-width: 768px){
+  .register-card{ width: min(96vw, 720px); }
+  .footer-section > div{ margin-right:0; }
+}

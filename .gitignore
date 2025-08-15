@@ -1,0 +1,13 @@
+# Sistema/IDE
+.DS_Store
+.vscode/
+.idea/
+# Node/Functions
+node_modules/
+# Build/Cache
+dist/
+build/
+.cache/
+# Credenciais
+.env
+*.env

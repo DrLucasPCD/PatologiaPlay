@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Subscribe to a cool new product</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Stripe.js v3 correto -->
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <section>
+      <div class="product">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16"><g fill="#E184DF"><path d="M127,50 L126,50 C123.238576,50 121,47.7614237 121,45 C121,42.2385763 123.238576,40 126,40 L135,40 L135,56 L133,56 L133,42 L129,42 L129,56 L127,56 L127,50 Z M127,48 L127,42 L126,42 C124.343146,42 123,43.3431458 123,45 C123,46.6568542 124.343146,48 126,48 L127,48 Z"/></g></svg>
+        <div class="description">
+          <h3>PatologiaPlay</h3>
+          <h5>R$ 20,00 a cada 6 meses</h5>
+        </div>
+      </div>
+
+      <!-- Fluxo A: servidor cria a Session e redireciona -->
+<form action="/.netlify/functions/create-checkout-session" method="POST">
+  <input type="hidden" name="product_id" value="prod_SrwdPmvp5c0KoQ" />
+  <button id="checkout-and-portal-button" type="submit">Checkout</button>
+</form>
+      </form>
+    </section>
+  </body>
+</html>

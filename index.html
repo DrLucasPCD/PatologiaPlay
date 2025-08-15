@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Patologia Geral — Interativo</title>
+  <meta name="description" content="Patologia Geral interativa: necrose, apoptose, lesões elementares, calcificações, degenerações, distúrbios de crescimento e mais." />
+  <meta name="theme-color" content="#0b0e13" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <button id="menuBtn" class="btn only-mobile" aria-label="Abrir menu" aria-expanded="false" title="Menu">☰</button>
+      <span class="logo">🧬</span>
+      <div>
+        <h1>Patologia Geral — Interativo</h1>
+        <p class="subtitle">Aprenda, pratique, revise. Tudo num lugar só.</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="Buscar conceitos, ex.: 'caseosa', 'hipertrofia'…" />
+      </div>
+      <button id="toggleDys" class="btn" title="Modo Disléxico (maior legibilidade)">Aa</button>
+      <button id="toggleTheme" class="btn" title="Alternar tema">🌗</button>
+      <button id="authBtn" class="btn" title="Entrar / Sair">Entrar</button>
+      <button id="exportBtn" class="btn" title="Exportar progresso">⤓</button>
+      <button id="resetBtn" class="btn danger" title="Zerar progresso">↺</button>
+    </div>
+  </header>
+
+  <!-- Modal de Login -->
+  <div id="authModal" class="auth-modal" aria-hidden="true">
+    <div class="auth-dialog">
+      <h3>Entrar</h3>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" oninput="onChangeEmail()">
+        <div class="error" id="email-required-error">Email é obrigatório</div>
+        <div class="error" id="email-invalid-error">Email é inválido</div>
+      </div>
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input type="password" id="password" placeholder="••••••••" oninput="onChangePassword()">
+        <div class="error" id="password-required-error">Senha é obrigatório</div>
+      </div>
+      <div class="actions">
+        <button id="login-button" class="btn" onclick="login()" disabled>Entrar</button>
+        <button id="recover-password-button" class="btn outline" onclick="recoverPassword()" disabled>Esqueci a senha</button>
+        <button class="btn clear" onclick="register()">Registrar</button>
+        <button class="btn danger" id="closeAuth">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <main class="app-main">
+    <aside class="sidebar" id="sidebar">
+      <div class="profile">
+        <div class="avatar" id="avatarInitials">?</div>
+        <div>
+          <div class="hello" id="helloName">Bem-vindo</div>
+          <div class="hint">Progresso geral: <span id="overallProgress">0%</span></div>
+          <button id="editNameBtn" class="btn" title="Alterar como você quer ser chamado">✏️ Nome</button>
+        </div>
+      </div>
+      <nav id="nav"></nav>
+    </aside>
+
+    <section class="content" id="content">
+      <div class="card welcome">
+        <h2>Comece por aqui</h2>
+        <p>Escolha um módulo à esquerda. Cada tópico traz:</p>
+        <ul>
+          <li>Resumo em tópicos objetivos</li>
+          <li>Detalhe com fisiopatologia e nuances morfológicas</li>
+          <li>Flashcards para memorização rápida</li>
+          <li>Quiz com explicações — nível “prova de medicina”</li>
+          <li><strong>Galeria de SVGs</strong> (necrose/apoptose)</li>
+          <li><strong>Prova Cronometrada</strong> (simulado com tempo)</li>
+        </ul>
+        <div class="tips">
+          <strong>Dicas</strong>
+          <ul>
+            <li>Use a busca para ir direto ao ponto.</li>
+            <li>Ative <em>Aa</em> para Modo Disléxico.</li>
+            <li>Instale como App: Menu do navegador → “Adicionar à tela inicial”.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="legend">
+      <span class="dot done"></span> concluído
+      <span class="dot inprog"></span> em andamento
+      <span class="dot todo"></span> a fazer
+    </div>
+    <div class="credit">
+      <small>Desenvolvido por <strong>Lucas Albuquerque</strong></small>
+    </div>
+  </footer>
+
+  <script>
+    // registra service worker para PWA/offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(()=>{});
+      });
+    }
+  </script>
+
+  <!-- Firebase: ordem correta (Firestore antes do init/app) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+  <script src="firebase-init.js"></script>
+
+  <!-- App -->
+  <script src="loading.js"></script>
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

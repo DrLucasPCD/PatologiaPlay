@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrar — Patologia Geral — Interativo</title>
+  <meta name="theme-color" content="#0b0e13" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="register.css" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <!-- Guard: exige token de pagamento válido; valida no backend via POST -->
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const rt = params.get('rt') || sessionStorage.getItem('register_token');
+      if(!rt){ location.replace('checkout.html'); return; }
+      document.documentElement.style.visibility = 'hidden';
+ fetch('/.netlify/functions/verify-register-token?token=' + encodeURIComponent(rt), { method: 'POST' })
+        .then(r=> r.ok ? r.json() : Promise.reject())
+        .then(data => {
+          if(!data || !data.ok){ throw new Error('invalid'); }
+          sessionStorage.setItem('register_token', rt);
+          if(data.email){ sessionStorage.setItem('register_email', data.email); }
+        })
+        .catch(()=>{ location.replace('checkout.html'); })
+        .finally(()=>{ document.documentElement.style.visibility = ''; });
+    })();
+  </script>
+</head>
+<body class="centralize">
+
+  <!-- Pré-preenche o e-mail quando disponível -->
+  <script>
+    (function(){
+      try{
+        const em = sessionStorage.getItem('register_email');
+        if(em){ setTimeout(()=>{ var el=document.getElementById('email'); if(el) el.value = em; }, 0); }
+      }catch(e){}
+    })();
+  </script>
+
+  <main class="card register-card" role="main">
+    <h2>Registrar — PatologiaPlay</h2>
+    <form id="registerForm" novalidate>
+      <div class="form-field">
+        <div><label for="email">Email</label></div>
+        <input type="email" id="email" placeholder="seu@email.com"
+               onchange="onChangeEmail()" />
+        <div class="error" id="email-required-error">Email é obrigatório</div>
+        <div class="error" id="email-invalid-error">Email é inválido</div>
+      </div>
+
+      <div class="form-field">
+        <div><label for="password">Senha</label></div>
+        <input type="password" id="password" placeholder="Senha"
+               onchange="onChangePassword()" />
+        <div class="error" id="password-required-error">Senha é obrigatório</div>
+        <div class="error" id="password-min-length-error">Senha deve ter pelo menos 6 caracteres</div>
+      </div>
+
+      <div class="form-field">
+        <div><label for="confirmPassword">Confirmar senha</label></div>
+        <input type="password" id="confirmPassword" placeholder="Confirmar senha"
+               onchange="onChangeConfirmPassword()" />
+        <div class="error" id="password-doesnt-match-error">Senha e Confirmar senha devem ser iguais</div>
+      </div>
+
+      <div>
+        <button type="button" class="btn solid" disabled id="register-button" onclick="register()">Registrar</button>
+        <button type="button" class="btn outline" onclick="window.location.href='index.html'">Voltar</button>
+      </div>
+    </form>
+  </main>
+
+  <div class="footer">
+    <div class="footer-section">
+      <h3>Informações do Desenvolvedor</h3>
+      <div class="developer-info">
+        <p><strong>Lucas Albuquerque</strong></p>
+        <p>Biomédico - CRBM 18.754</p>
+      </div>
+      <div class="developer-contact">
+        <p><strong>Contatos:</strong></p>
+        <p>E-mail: drlucasalbuquerquepcd@gmail.com</p>
+        <p>Instagram: @drlucaspcd</p>
+        <p>WhatsApp: +55 081 983244495</p>
+      </div>
+      <div class="download-app-button">
+        <button class="btn outline" onclick="window.location.href='AppDownload.html'">Como baixar o app</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="validations.js"></script>
+  <script src="loading.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+  <script src="firebase-init.js"></script>
+  <script src="register.js"></script>
+</body>
+</html>
