@@ -2,12 +2,24 @@
 .DS_Store
 .vscode/
 .idea/
-# Node/Functions
+
+# Node/Netlify Functions
 node_modules/
+.npm/
+.netlify/
+
 # Build/Cache
 dist/
 build/
 .cache/
+
 # Credenciais
 .env
 *.env
+stripe.properties
+
+# Mídia grande (use LFS se precisar versionar)
+*.mp4
+*.mov
+*.zip
+*.tar.gz
