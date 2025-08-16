@@ -88,7 +88,30 @@ public class Server {
       String lookupKey = request.queryParams("lookup_key");
 
       PriceCollection prices;
-      if (productId != null && !productId.isEmpty()) {
+      // Fallback via .env se nada vier no request
+      String envSub = System.getenv("STRIPE_SUBSCRIPTION_PRICE_ID"); // pode ser price_... ou prod_...
+      String envPrice = System.getenv("STRIPE_PRICE_ID");            // pode ser price_... ou prod_...
+
+      if ((productId == null || productId.isEmpty()) && (lookupKey == null || lookupKey.isEmpty())) {
+        if (envSub != null && !envSub.isBlank() && envSub.startsWith("prod_")) {
+          PriceListParams priceParams = PriceListParams.builder()
+            .setProduct(envSub)
+            .setActive(true)
+            .setLimit(10L)
+            .build();
+          prices = Price.list(priceParams);
+        } else if (envPrice != null && !envPrice.isBlank() && envPrice.startsWith("prod_")) {
+          PriceListParams priceParams = PriceListParams.builder()
+            .setProduct(envPrice)
+            .setActive(true)
+            .setLimit(10L)
+            .build();
+          prices = Price.list(priceParams);
+        } else {
+          // Se .env já trouxer price_ diretamente, não precisamos listar; criaremos a Session direto adiante.
+          prices = null;
+        }
+      } else if (productId != null && !productId.isEmpty()) {
         PriceListParams priceParams = PriceListParams.builder()
           .setProduct(productId)
           .setActive(true)
@@ -104,20 +127,37 @@ public class Server {
         prices = Price.list(priceParams);
       }
 
+      // Decide o priceId final
+      String finalPriceId = null;
+      if (envSub != null && envSub.startsWith("price_")) finalPriceId = envSub;
+      if (finalPriceId == null && envPrice != null && envPrice.startsWith("price_")) finalPriceId = envPrice;
+      if (finalPriceId == null && prices != null && !prices.getData().isEmpty()) {
+        finalPriceId = prices.getData().stream()
+          .filter(p -> p.getRecurring() != null)
+          .findFirst()
+          .orElse(prices.getData().get(0))
+          .getId();
+      }
+      if (finalPriceId == null) {
+        response.status(400);
+        return "priceId não configurado";
+      }
+
+      // Descobre o modo conforme o price (assume subscription por padrão)
+      SessionCreateParams.Mode mode = SessionCreateParams.Mode.SUBSCRIPTION;
+      try {
+        com.stripe.model.Price pr = com.stripe.model.Price.retrieve(finalPriceId);
+        if (pr.getRecurring() == null) mode = SessionCreateParams.Mode.PAYMENT;
+      } catch(Exception ignored){}
+
       SessionCreateParams params = SessionCreateParams.builder()
         .addLineItem(
           SessionCreateParams.LineItem.builder()
-            .setPrice(
-              prices.getData().stream()
-                .filter(p -> p.getRecurring() != null)
-                .findFirst()
-                .orElse(prices.getData().get(0))
-                .getId()
-            )
+            .setPrice(finalPriceId)
             .setQuantity(1L)
             .build()
         )
-        .setMode(SessionCreateParams.Mode.SUBSCRIPTION)
+        .setMode(mode)
         .setSuccessUrl(YOUR_DOMAIN + "/success.html?session_id={CHECKOUT_SESSION_ID}")
         .setCancelUrl(YOUR_DOMAIN + "/cancel.html")
         .build();
